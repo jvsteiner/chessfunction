@@ -33,6 +33,6 @@ Currently the amount of time that each game is analyzed for is an environment va
 
 ### Thanks
 
-This fun project would not have been possible without the awesome [chess-annotator](https://github.com/rpdelaney-archive/python-chess-annotator) from `rpdelaney`, without which this would be just another boring serverless example project.  Thanks very much.
+This fun project would not have been possible without the awesome [chess-annotator](https://github.com/rpdelaney-archive/python-chess-annotator) from `rpdelaney`, without which this would be just another boring serverless example project.  Thanks very much.  Also, thanks to the team at [Stockfish](https://stockfishchess.org/), who provided the UCI engine included here - I include the linux version `stockfish_20011801_x64` [downloaded here](https://stockfishchess.org/download/), in this repository.
 
 
