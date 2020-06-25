@@ -28,7 +28,6 @@ provider:
     SENDER: 'your_sending_email@example.com'
     REGION: ${self:provider.region}
     ANNOTATE_GAME: ${self:service}-${self:provider.stage}-annotate_game
-    GAME_TIME: '0.3' # how long the game are analyzed for, in minutes
 
   iamRoleStatements:
     - Effect: Allow
@@ -41,6 +40,10 @@ provider:
         - ses:SendRawEmail
       Resource: 
         - "arn:aws:ses:${self:provider.region}:*:*"      
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: "*"
 
 # you can overwrite defaults here
 #  stage: dev

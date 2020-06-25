@@ -1,6 +1,6 @@
 # Chess Evaluation in a Lambda Function
 
-Run stockfish chess engine in an aws lambda environment.  Analyze and annotate a pgn file, with multiple games, and each game is processed in parallel.  You can run a 8 minute analysis on 200 games, and have the resulting PGN file emailed to you using SES in 8 minutes.
+Run the stockfish chess engine in an aws lambda environment.  Analyze and annotate a .pgn file, with multiple games, and each game is processed in parallel.  You can run a 8 minute analysis on 200 games, and have the resulting PGN file emailed to you using SES in 8 minutes.
 
 This works because lambda functions have their own real infrastructure underneath.  There is a file system, you can run binaries, the network stack works just fine - if only for a few hundred milliseconds!
 
@@ -14,22 +14,40 @@ You need an AWS account to use this, and be familiar with setting up you environ
 ### Example usage
 
 Async, results emailed
-`sls invoke -f annotate_games -p games/Rohan_Bansal_vs_Emīls_Steiners.pgn -t Event`
+`sls invoke -f annotate_games -p games/somegame.pgn -t Event`
 will send email, leave off `-t Event` to block and receive output to stdout
 
 I use it this way, having added the following to my `.bash_profile` (on OSX)
-`chesscheck() { pd=`pwd`; cd ~/Code/chessfunction; sls invoke -f annotate_games -p $pd/$1 -t Event; cd $pd; }`
+
+```
+chesscheck() { pd=`pwd`; cd ~/Code/chessfunction; sls invoke -f annotate_games -p $pd/$1 -t Event; cd $pd; }
+```
+
 fire and forget
 
 ### Changing Dependencies
 
 If you decide to hack on this and wish to add some different stuff, you will require this command to update deps:
 
-`pip3 install -t src/vendor -r aws_requirements.txt`
+```
+$ pip3 install -t src/vendor -r aws_requirements.txt
+```
 
 ### Notes/TODO
 
-Currently the amount of time that each game is analyzed for is an environment variable, and therefore, if you want to change it, you need to redeploy.  To solve this, you would need to wrap the .pgn input in a JSON payload, and pass in some parameter that way - ain't nobody got time for that!  But srsly, if you do - PR's are welcome.
+Currently the amount of time that each game is analyzed for is being stored in AWS Parameter store, you have to set up the parameter `/chessfunction/evaltime` with the aws cli:
+
+```
+$ aws ssm put-parameter --name /chessfunction/evaltime --value desired_value_in_min --type String
+```
+
+Afterwards, you can adjust this parameter using:
+
+```
+$ aws ssm put-parameter --name /chessfunction/evaltime --value desired_value_in_min --overwrite
+```
+
+It might be preferable to manage the email addresses to be used in this way as well. TODO
 
 ### Thanks
 

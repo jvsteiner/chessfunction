@@ -21,7 +21,6 @@ SENDER = os.environ["SENDER"]
 RECIPIENT = os.environ["RECIPIENT"]
 REGION = os.environ["REGION"]
 ANNOTATE_GAME = os.environ["ANNOTATE_GAME"]
-GAME_TIME = os.environ["GAME_TIME"]
 # global client, because making new clients is apparently not threadsafe.
 LAMBDA_CLIENT = boto3.client(
     'lambda',
@@ -35,9 +34,13 @@ LAMBDA_CLIENT = boto3.client(
     )
 )
 
+PARAM_CLIENT = boto3.client('ssm')
+
 
 def annotate_game(event, context):
-    return annotator.one_game(event, GAME_TIME)
+    evaltime = get_parameter('/chessfunction/evaltime')
+    print("evaltime:", evaltime)
+    return annotator.one_game(event, evaltime)
 
 def invoke(event):
     response = LAMBDA_CLIENT.invoke(
@@ -96,3 +99,10 @@ def send_email(analyzed_games):
         Destinations=[RECIPIENT],
         RawMessage={'Data': msg.as_string()}
     )
+
+def get_parameter(key):
+    resp = PARAM_CLIENT.get_parameter(
+        Name=key,
+        WithDecryption=True
+    )
+    return resp['Parameter']['Value']
