@@ -24,8 +24,8 @@ provider:
   region: us-east-1
   timeout: 300
   environment:
-    RECIPIENT: 'your_receiving_email@example.com'
-    SENDER: 'your_sending_email@example.com'
+    RECIPIENT: 'jvsteiner@gmail.com'
+    SENDER: 'contact@saturdayatsix.com'
     REGION: ${self:provider.region}
     ANNOTATE_GAME: ${self:service}-${self:provider.stage}-annotate_game
 
