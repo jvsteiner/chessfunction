@@ -8,7 +8,8 @@ I've constructed this service as a series of two functions, `analyze_games` and 
 
 The resulting, annotated .pgn file is collected by the original, invoking `analyze_games` function, which emails to them to you as an attachment (read up on setting up email addresses for AWS SES using your favorite search engine).  Other comments in the original .pgn file, such as click timings will be removed.
 
-You need an AWS account to use this, and be familiar with setting up you environment, using the `serverless` framework etc.  This is not a tutorial.
+You need an AWS account to use this, and be familiar with setting up you environment, using the `serverless` framework etc.  This is not a tutorial. In addition to installing `serverless` and deploying the project, you will need to chage out the email address that the emails should be coming from and set them up in SES.  You also need to add the Paramter Store parameter: `
+/chessfunction/evaltime` as a string, and this will be used to decide how long to evaluate each game (in minutes).
 
 
 ### Example usage
