@@ -25,6 +25,29 @@ chesscheck() { pd=`pwd`; cd ~/Code/chessfunction; sls invoke -f annotate_games -
 
 fire and forget
 
+### Setup Instructions
+
+1. Install serverless on your local machine `npm install -g serverless`
+
+2. Create an IAM user on AWS and assign it Administrator Access
+
+3. Configure serverless with your new IAM credentials `sls config credentials --provider aws --key accesskey --secret secretkey
+`
+
+4. Clone this repository
+
+5. Edit the serverless.yml and add your email
+
+6. Add that email as a verified email in Amazon SES
+
+7. Initialize the eval_time parameter `aws ssm put-parameter --name /chessfunction/evaltime --value desired_value_in_min --type String`
+
+8. Deploy the function to your own AWS with `sls deploy`
+
+9. From inside the folder of this cloned repository run `sls invoke -f annotate_games -p /path/to/pgn-file`
+
+10. Profit
+
 ### Changing Dependencies
 
 If you decide to hack on this and wish to add some different stuff, you will require this command to update deps:
